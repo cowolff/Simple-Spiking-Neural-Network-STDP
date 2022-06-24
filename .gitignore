@@ -160,3 +160,6 @@ cython_debug/
 #.idea/
 visualized_weights/*
 .DS_Store
+*.png
+*.png
+*.png
