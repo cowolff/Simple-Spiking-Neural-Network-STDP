@@ -3,6 +3,8 @@ import time
 import imageio
 import numpy as np
 import math
+import matplotlib.pyplot as plt
+import tensorflow as tf
 
 
 class Parameters:
@@ -28,13 +30,13 @@ class Parameters:
     max_weight = 1.0
 
     # STDP Parameters
-    STDP_offset = 0
-    sigma = 0.01
-    A_plus = 0.8
-    A_minus = 0.8
-    tau_plus = 5
-    tau_minus = 5
-    mu = 0.9
+    STDP_offset = 0 # STDP Offset
+    sigma = 0.01 # STDP Learning Rate
+    A_plus = 0.8 # Scaling Factor for Training Purposes - Decreasing Synpatic Weights
+    A_minus = 0.3 # Scaling Factor for Training Purposes - Increasing Synpatic Weights
+    tau_plus = 5 # STDP Time Constant in "μs" - Can be changed as Hyperparameter(?)
+    tau_minus = 5 # STDP Time Constant in "μs" - Can be changed as Hyperparameter(?)
+    mu = 0.9 # Exponential Factor
 
     min_frequency = 1
     max_frequency = 50
@@ -139,11 +141,11 @@ class SNN:
         return convoluted_image
 
     # STDP reinforcement learning curve
-    def STDP_weighting_curve(self, time_step: int):
-        if time_step > 0:
-            return -self.parameters.A_plus * (np.exp(-float(time_step) / self.parameters.tau_plus) - self.parameters.STDP_offset)
-        if time_step <= 0:
-            return self.parameters.A_minus * (np.exp(float(time_step) / self.parameters.tau_minus) - self.parameters.STDP_offset)
+    def STDP_weighting_curve(self, delta_time: int):
+        if delta_time > 0:
+            return -self.parameters.A_plus * (np.exp(-float(delta_time) / self.parameters.tau_plus) - self.parameters.STDP_offset)
+        if delta_time <= 0:
+            return self.parameters.A_minus * (np.exp(float(delta_time) / self.parameters.tau_minus) - self.parameters.STDP_offset)
 
     # STDP weight update rule
     def update_synapse(self, synapse_weight, weight_factor):
@@ -167,79 +169,90 @@ class SNN:
     def training(self):
         potentials = []
         potential_thresholds = []
+
         for image_path in range(self.parameters.layer2_size):
             potentials.append([])
             potential_thresholds.append([])
+
         time_of_learning = np.arange(1, self.parameters.image_train_time + 1, 1)
-        output_layer = []
-        # Creating Second Layer
-        for image_path in range(self.parameters.layer2_size):
-            neuron = Neuron(self.parameters)
-            neuron.initial()  # TODO In die __init__()
-            output_layer.append(neuron)
-        # Random synapse matrix	initialization
+
+        output_layer = [Neuron(self.parameters) for i in range(self.parameters.layer2_size)]
+
+        # Random Synapse Matrix	Initialization
         synapses = np.ones((self.parameters.layer2_size, self.parameters.layer1_size))  # np.random.uniform(low=0.95, high=1.0, size=(self.parameters.layer2_size, self.parameters.layer1_size))  # np.ones((layer2_size , layer1_size))
         self.parameters.max_weight = np.max(synapses)
+
         synapse_memory = np.zeros((self.parameters.layer2_size, self.parameters.layer1_size))
-        # Creating labels corresponding to neuron
+
+        # Creating Mapping Neurons which contains the Number they have learned
         neuron_labels_lookup = np.repeat(-1, self.parameters.layer2_size)
+
+        # Loading Dataset
+        (X_train, Y_train), (X_test, Y_test) = tf.keras.datasets.mnist.load_data()
+        X_train, Y_train = X_train[:1200], Y_train[:1200]
+
         for epoch in range(self.parameters.epochs):
-            for folder in next(os.walk('./MNIST/training/'))[1]:
-                for image_path in os.listdir("./MNIST/training/" + folder + "/")[:80]:
-                    time_start = time.time()
+            for image, label in zip(X_train, Y_train):
+                time_start = time.time()
 
-                    img = imageio.imread("./MNIST/training/" + folder + "/" + image_path)
+                # Convolving image with receptive field and encoding to generate spike train
+                spike_train = np.array(self.encode_image_to_spike_train(self.receptive_field(image)))
 
-                    # Convolving image with receptive field and encoding to generate spike train
-                    spike_train = np.array(self.encode_image_to_spike_train(self.receptive_field(img)))
+                # Local variables
+                winner_index = None
+                count_spikes = np.zeros(self.parameters.layer2_size)
+                current_potentials = np.zeros(self.parameters.layer2_size)
 
-                    # Local variables
-                    winner_index = None
-                    count_spikes = np.zeros(self.parameters.layer2_size)
-                    current_potentials = np.zeros(self.parameters.layer2_size)
+                synapse_memory = np.zeros((self.parameters.layer2_size, self.parameters.layer1_size))
 
-                    # Leaky integrate and fire neuron dynamics
-                    for time_step in time_of_learning:
+                # Leaky integrate and fire neuron dynamics
+                for time_step in time_of_learning:
 
-                        for neuron_index, neuron in enumerate(output_layer):
-                            self.calculate_potentials_and_adapt_thresholds(current_potentials, neuron, neuron_index, potential_thresholds, potentials, spike_train, synapses, time_step)
+                    for neuron_index, neuron in enumerate(output_layer):
+                        self.calculate_potentials_and_adapt_thresholds(current_potentials, neuron, neuron_index, potential_thresholds, potentials, spike_train, synapses, time_step)
 
-                        winner_index, winner_neuron = self.get_winner_neuron(current_potentials, output_layer)
+                    winner_index, winner_neuron = self.get_winner_neuron(current_potentials, output_layer)
 
-                        # Check for spikes and update weights
-                        if current_potentials[winner_index] < winner_neuron.adaptive_spike_threshold:
-                            continue  # Go to next time step
+                    # Check if Winner doesn't spike(reaches its own adaptive spike threshold?)
+                    if current_potentials[winner_index] < winner_neuron.adaptive_spike_threshold:
+                        continue  # Go to next time step
 
-                        count_spikes[winner_index] += 1
+                    count_spikes[winner_index] += 1
 
-                        winner_neuron.hyperpolarization(time_step)
-                        winner_neuron.adaptive_spike_threshold += 1  # Adaptive Membrane/Homoeostasis: Increasing the threshold of the neuron
+                    winner_neuron.hyperpolarization(time_step)
+                    winner_neuron.adaptive_spike_threshold += 1  # Adaptive Membrane / Homoeostasis: Increasing the threshold of the neuron
 
-                        for layer1_index in range(self.parameters.layer1_size):
-                            self.find_and_strengthen_contributing_synapses(layer1_index, spike_train, synapse_memory, synapses, time_step, winner_index)
-                            self.find_and_weaken_not_contributing_synapses(layer1_index, synapse_memory, synapses, winner_index)
+                    for layer1_index in range(self.parameters.layer1_size):
+                        self.find_and_strengthen_contributing_synapses(layer1_index, spike_train, synapse_memory, synapses, time_step, winner_index)
+                        self.find_and_weaken_not_contributing_synapses(layer1_index, synapse_memory, synapses, winner_index)
 
-                        self.inihibit_looser_neurons(count_spikes, output_layer, time_step, winner_index)
+                    self.inihibit_looser_neurons(count_spikes, output_layer, time_step, winner_index)
 
-                    self.reset_neurons(output_layer)
+                self.reset_neurons(output_layer)
 
-                    neuron_labels_lookup[winner_index] = int(folder)
+                # Assigning Label to Winner Neuron
+                neuron_labels_lookup[winner_index] = int(label)
 
-                    self.debug_training_state(count_spikes, time_start)
+                self.debug_training_state(count_spikes, time_start)
 
-        """ print(count_spikes)
-        # Plotting
-        ttt = np.arange(0,len(potentials[0]),1)
-        for i in range(layer2_size):
-            axes = plt.gca()
-            plt.plot(ttt, potential_thresholds[i], 'r' )
-            plt.plot(ttt, potentials[i])
-            plt.show() """
+        self.plot_potentials_over_time(potential_thresholds, potentials)
+
         # Reconstructing weights to analyze training
         self.visualize_synapse_weights(neuron_labels_lookup, synapses)
+
         np.savetxt("weights.csv", synapses, delimiter=",")
         np.savetxt("labels.csv", neuron_labels_lookup, delimiter=',')
+
         print("Finished Training. Saved Weights and Labels.")
+
+    def plot_potentials_over_time(self, potential_thresholds, potentials):
+        # Plotting
+        spaced_potentials = np.arange(0, len(potentials[0]), 1)
+        for i in range(self.parameters.layer2_size):
+            axes = plt.gca()
+            plt.plot(spaced_potentials, potential_thresholds[i], 'r')
+            plt.plot(spaced_potentials, potentials[i])
+            plt.show()
 
     def visualize_synapse_weights(self, label_neuron, synapses):
         for layer2_index in range(self.parameters.layer2_size):
@@ -276,13 +289,14 @@ class SNN:
             if 0 <= time_step + past_time_step < self.parameters.image_train_time + 1:
                 if spike_train[layer1_index][time_step + past_time_step] == 1:  # if presynaptic spike was in the tolerance window
                     synapses[winner_index][layer1_index] = self.update_synapse(synapses[winner_index][layer1_index], self.STDP_weighting_curve(past_time_step))  # strengthen weights
-                    synapse_memory[winner_index][
-                        layer1_index] = 1  # TODO Possible Reset necessary - somewhere?!?!?
+                    synapse_memory[winner_index][layer1_index] = 1  # TODO Possible Reset necessary - somewhere?!?!?
                     break
+                #else:
+                    #synapse_memory[winner_index][layer1_index] = 0
 
     def find_and_weaken_not_contributing_synapses(self, layer1_index, synapse_memory, synapses, winner_index):
         if synapse_memory[winner_index][layer1_index] != 1:  # if presynaptic spike was not in the tolerance window, reduce weights of that synapse
-            synapses[winner_index][layer1_index] = self.update_synapse(synapses[winner_index][layer1_index], self.STDP_weighting_curve(1))
+            synapses[winner_index][layer1_index] = self.update_synapse(synapses[winner_index][layer1_index], self.STDP_weighting_curve(1)) # TODO Wir tun hier so als ob alle anderen PreSynpaticSpikes nur 1 Timestep nach dem PostSynpaticSpike auftreten
 
     def get_winner_neuron(self, current_potentials, output_layer):
         winner_index = np.argmax(current_potentials)
@@ -301,10 +315,9 @@ class SNN:
                     neuron.adaptive_spike_threshold -= self.parameters.threshold_drop_rate
 
             current_potentials[neuron_index] = neuron.potential
-        potentials[neuron_index].append(
-            neuron.potential)  # Only for plotting: Changing potential overtime
-        potential_thresholds[neuron_index].append(
-            neuron.adaptive_spike_threshold)  # Only for plotting: Changing threshold overtime
+
+        potentials[neuron_index].append(neuron.potential)  # Only for plotting: Changing potential overtime
+        potential_thresholds[neuron_index].append(neuron.adaptive_spike_threshold)  # Only for plotting: Changing threshold overtime
 
 
 initial_parameters = Parameters()
