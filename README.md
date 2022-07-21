@@ -14,7 +14,8 @@ This project was created as part of the Neurodynamics lecture at the _University
 ## ❓ Why?
 Artificial Neural Networks (ANNs) are only loosely inspired by the human brain while Spiking Neural Networks (SNNs) incorporate various concepts of it.
 Spike Time Dependent Plasticity (STDP) is one of the most commonly used biologically inspired unsupervised learning rules for SNNs.<br/>
-In order to obtain a better understanding of SNNs we compared their performance in image classification to Fully-Connected ANNs using the MNIST dataset.
+In order to obtain a better understanding of SNNs we compared their performance in image classification to Fully-Connected ANNs using the MNIST dataset. <br /> 
+<img src="Images/MNISTDatasetSample.JPG" alt="MNIST Example Images" width="500" /> <br /> 
 For this to work, we had to transform the data for the SNN into rate-encoded spike trains.
 As a major part of our work, we provide a comprehensible implementation of an STDP-based SNN.
 <p align="right">(<a href="#top">back to top</a>)</p>
