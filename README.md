@@ -11,6 +11,7 @@ This project was created as part of the Neurodynamics lecture at the _University
   - [🚫 Limitations](#-limitations)
   - [📃 Paper](#-paper)
   - [📝 Authors](#-authors)
+  - [📎 License](#-license)
   <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## ❓ Why?
@@ -82,3 +83,18 @@ In general our results showed that our implementation of an Spiking Neural Netwo
 [Leonie Grafweg](grafweg@uos.de)<br/>
 [Paula Heupel](pheupel@uos.de)<br/>
 [Cornelius Wolff](cowolff@uos.de)<br/>
+
+## 📎 License
+Copyright 2022 Cornelius Wolff, Paula Heupel, Leonie Grafweg, Peter Keffer
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
