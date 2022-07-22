@@ -78,7 +78,7 @@ As part of this lecture, we also provided a poster presentation of our results f
 <p align="center"><img src="Images/PosterNeurodynamics.png" alt="Group poster" width="70%" /></p> <br /> 
 
 ## 📃 Paper
-If you are interested in the exact hyperparameters we used or want to get more details in general, we also uploaded the accompanying term paper, which we wrote for this lecture. Still here are some of our results we achieved:<br/>
+If you are interested in the exact hyperparameters we used or want to get more details in general, we also uploaded the [accompanying term paper](Paper.pdf), which we wrote for this lecture. Still here are some of our results we achieved:<br/>
 <img src="Images/ClassicalANNComparison.png" alt="drawing" width="49%" /> |<img src="Images/SNN_Comparison.png" alt="drawing" width="49%" /><br/>
 In general our results showed that our implementation of an Spiking Neural Networks got a pretty good classification performance after only one epoch of training. But it didn't improve much beyond that and it was handely beaten by a classical ANN of similiar size using Dense layers after a few training epochs. Furthermore the SNNs didn't profit from more Neurons as much as the classical ANNs with Dense Layers did.
 <p align="right">(<a href="#top">back to top</a>)</p>
