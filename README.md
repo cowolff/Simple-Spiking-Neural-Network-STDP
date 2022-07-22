@@ -9,6 +9,7 @@ This project was created as part of the Neurodynamics lecture at the _University
   - [💻 Usage](#-usage)
   - [💾 Structure](#-structure)
   - [🚫 Limitations](#-limitations)
+  - [📊 Poster](#-poster)
   - [📃 Paper](#-paper)
   - [📝 Authors](#-authors)
   - [📎 License](#-license)
@@ -71,6 +72,10 @@ To-Do: Add usage description
 - Long training times
 - Didn't use the entire MNIST dataset for training
 <p align="right">(<a href="#top">back to top</a>)</p>
+
+## 📊 Poster
+As part of this lecture, we also provided a poster presentation of our results for our fellow students and lecturers.
+<p align="center"><img src="Images/PosterNeurodynamics.png" alt="Group poster" width="70%" /></p> <br /> 
 
 ## 📃 Paper
 If you are interested in the exact hyperparameters we used or want to get more details in general, we also uploaded the accompanying term paper, which we wrote for this lecture. Still here are some of our results we achieved:<br/>
