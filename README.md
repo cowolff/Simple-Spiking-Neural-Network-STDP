@@ -4,12 +4,12 @@ This project was created as part of the Neurodynamics lecture at the _University
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## 📖 Table of Contents
-  - [❓ Why?](#-why)
-  - [✨ Features](#-features)
-  - [💻 Usage](#-usage)
-  - [💾 Structure](#-structure)
-  - [⚠️ Limitations](#-limitations)
-  - [📃 Paper](#-paper)
+  - [❓ Why?](#-why-)
+  - [✨ Features](#-features-)
+  - [💻 Usage](#-usage-)
+  - [💾 Structure](#-structure-)
+  - [⚠️ Limitations](#-limitations-)
+  - [📃 Paper](#-paper-)
   <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## ❓ Why?
@@ -69,6 +69,7 @@ To-Do: Add usage description
 - Convertions into Spike Trains works only with GreyScale
 - Long training times
 - Didn't use the entire MNIST dataset for training
+  <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## 📃 Paper
 If you are interested in the exact hyperparameters we used or want to get more details in general, we also uploaded the accompanying term paper, which we wrote for this lecture. Still here are some of our results we achieved:<br/>
