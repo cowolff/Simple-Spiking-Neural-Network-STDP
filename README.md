@@ -83,6 +83,7 @@ In general our results showed that our implementation of an Spiking Neural Netwo
 [Leonie Grafweg](grafweg@uos.de)<br/>
 [Paula Heupel](pheupel@uos.de)<br/>
 [Cornelius Wolff](cowolff@uos.de)<br/>
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ## 📎 License
 Copyright 2022 Cornelius Wolff, Paula Heupel, Leonie Grafweg, Peter Keffer
@@ -98,3 +99,4 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+<p align="right">(<a href="#top">back to top</a>)</p>
