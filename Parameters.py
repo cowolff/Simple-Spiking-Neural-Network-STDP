@@ -122,7 +122,7 @@ class Parameters:
         self.image_size = image_size
         self.resting_potential = resting_potential
         self.layer1_size = image_size[0] * image_size[1]  # Number of neurons in first layer
-        self.layer2_size = layer2_size if layer2_size <= training_images_amount else (print("Output Layer Size has to be greater or equal to training_images_amount") or training_images_amount)
+        self.layer2_size = layer2_size if layer2_size <= training_images_amount else (print("Output Layer Size has to be greater or equal to training_images_amount. Changed it's size to training_images_amount.") or training_images_amount)
         self.inhibitory_potential = inhibitory_potential
         self.spike_threshold = spike_threshold
         self.hyperpolarization_potential = hyperpolarization_potential
