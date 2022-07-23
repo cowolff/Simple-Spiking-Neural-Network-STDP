@@ -189,15 +189,15 @@ class SNN:
 
 
     def run(self):
-        if parameters.mode == "train":
+        if self.parameters.mode == "train":
             self.train()
 
-        elif parameters.mode == "test":
+        elif self.parameters.mode == "test":
             pass
             raise NotImplemented
             # self.test()
 
-        elif parameters.mode == "inference":
+        elif self.parameters.mode == "inference":
             prediction = self.inference(self.parameters.image_inference_path, self.parameters.weights_path, self.parameters.labels_path)
             print(f"Prediction: {prediction}")
 
