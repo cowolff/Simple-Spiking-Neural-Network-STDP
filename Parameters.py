@@ -11,9 +11,9 @@ class Parameters:
     checkpoint_interval = 1
     train_dataset_path = "MNIST/training/"
     test_dataset_path = "MNIST/testing/"
-    preprocessing_data = True
-    training_images_amount = 100
-    test_images_amount = 10
+    preprocessing_data = False
+    training_images_amount = 800
+    test_images_amount = 100
     use_tf_dataset: bool = True
     plotting_potentials = False
     visualize_weights = False
@@ -28,7 +28,7 @@ class Parameters:
     image_size = (28, 28)
     resting_potential = -70
     layer1_size = image_size[0] * image_size[1]  # Number of neurons in first layer
-    layer2_size = 500  # Number of neurons in second layer
+    layer2_size = 800  # Number of neurons in second layer
 
     # Neuron Parameters
     inhibitory_potential = -100
