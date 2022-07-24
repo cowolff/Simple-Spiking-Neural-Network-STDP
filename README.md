@@ -59,9 +59,14 @@ To-Do: Add usage description
     │   │   ├── labels.csv
     │── .gitignore
     │── LICENSE
-    │── SNN.py                    # The main py-file for training and testing the SNN
-    │── ANN_Comparison.ipynb      # The classical ANNs are being trained in Tensorflow
-    │── Visualization.ipynb
+    │── main.py                 # Main file for executing training/inference
+    │── SNN.py                  # The file containing all functions for training/infering 
+    │                           # the SNN
+    │── Neuron.py
+    │── Paper.pdf               # The term paper we submitted
+    │── Parameters.py           # All parameters used for training/inference
+    │── ANN_Comparison.ipynb    # The classical ANNs are being trained in Tensorflow
+    │── Visualization_Helper.ipynb
     │── README.md
     └── requirements.txt
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -76,6 +81,7 @@ To-Do: Add usage description
 ## 📊 Poster
 As part of this lecture, we also provided a poster presentation of our results for our fellow students and lecturers.
 <p align="center"><img src="Images/PosterNeurodynamics.png" alt="Group poster" width="70%" /></p> <br /> 
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ## 📃 Paper
 If you are interested in the exact hyperparameters we used or want to get more details in general, we also uploaded the [accompanying term paper](Paper.pdf), which we wrote for this lecture. Still here are some of our results we achieved:<br/>
