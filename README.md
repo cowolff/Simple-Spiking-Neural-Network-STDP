@@ -72,18 +72,21 @@ To get a list of all possible hyperparameters use
     │   │   │   ├── 0
     │   │   │   ...
     │   │   ├── labels.csv
+    ├── Notebooks
+    │   │── ANN_Comparison.ipynb          # Comparison ANNs being trained in Tensorflow
+    │   │── Visualization_Helper.ipynb    # Visualization of our results
+    │   │── Deprecated_Training.ipynb     # Old deprecated training notebook
+    ├── Pretrained              # Pretrained weights and labels for testing
+    │   │── labels.csv
+    │   │── weights.csv
     │── .gitignore
-    │── LICENSE
-    │── main.py                 # Main file for executing training/inference
-    │── SNN.py                  # The file containing all functions for training/infering 
-    │                           # the SNN
+    │── main.py                 # Main file for executing training/inference the SNN
     │── Neuron.py
     │── Paper.pdf               # The term paper we submitted
     │── Parameters.py           # All parameters used for training/inference
-    │── ANN_Comparison.ipynb    # The classical ANNs are being trained in Tensorflow
-    │── Visualization_Helper.ipynb
     │── README.md
-    └── requirements.txt
+    │── requirements.txt
+    └── SNN.py                  # The file containing all functions for training/infering 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## 🚫 Limitations
