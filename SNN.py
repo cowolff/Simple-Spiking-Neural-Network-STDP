@@ -170,7 +170,7 @@ class SNN:
         # Creating Mapping Neurons which contains the Number they have learned
         neuron_labels_lookup = np.repeat(-1, self.parameters.layer2_size)
 
-        # Loading Dataset
+        # Loading Dataset with Tensorflow
         if self.parameters.use_tf_dataset:
             (X_train, Y_train), (X_test, Y_test) = tf.keras.datasets.mnist.load_data()
             X_train, Y_train = X_train[:self.parameters.training_images_amount], Y_train[:self.parameters.training_images_amount]
@@ -181,6 +181,7 @@ class SNN:
                 X_train, Y_train = self.preprocess_data_tf_dataset(X_train, Y_train)
                 X_test, Y_test = self.preprocess_data_tf_dataset(X_test, Y_test)
                 print("Preprocessing finised.")
+        # If dataset is loaded from local files
         else:
             X_train_generator, Y_train_generator = lambda: self.downloaded_dataset_generator_X(self.parameters.train_dataset_path, self.parameters.training_images_amount / 10), lambda: self.downloaded_dataset_generator_Y(self.parameters.train_dataset_path, self.parameters.training_images_amount / 10)
             X_test_generator, Y_test_generator = lambda: self.downloaded_dataset_generator_X(self.parameters.test_dataset_path, self.parameters.test_images_amount / 10), lambda: self.downloaded_dataset_generator_Y(self.parameters.test_dataset_path, self.parameters.test_images_amount / 10)
@@ -191,12 +192,15 @@ class SNN:
                 X_test, Y_test = self.preprocess_data_downloaded(self.parameters.test_dataset_path, self.parameters.test_images_amount / 10)
                 print("Preprocessing finised.")
 
+        # Starting training
         for epoch in range(self.parameters.epochs):
-
+            
+            # If data is not preprocessed, the data is going to be converted again for each epoch
             if not self.parameters.use_tf_dataset and not self.parameters.preprocessing_data:
                 X_train, Y_train = X_train_generator(), Y_train_generator()
                 X_test, Y_test = X_test_generator(), Y_test_generator()
 
+            # Iterating over each image and coresponding label
             for image, label in zip(X_train, Y_train):
                 time_start = time.time()
 
@@ -223,6 +227,7 @@ class SNN:
                             potentials[neuron_index].append(neuron.potential)  # Only for plotting: Changing potential overtime
                             potential_thresholds[neuron_index].append(neuron.adaptive_spike_threshold)  # Only for plotting: Changing threshold overtime
 
+                    # Determine the winner neuron and index
                     winner_index, winner_neuron = self.get_winner_neuron(current_potentials, output_layer)
 
                     # Check if Winner doesn't spike(reaches its own adaptive spike threshold?)
@@ -240,6 +245,7 @@ class SNN:
 
                     self.inihibit_looser_neurons(count_spikes, output_layer, time_step, winner_index)
 
+                # Reset the neurons for the next image
                 self.reset_neurons(output_layer)
 
                 # Assigning Label to Winner Neuron
@@ -250,7 +256,8 @@ class SNN:
                 if neuron_labels_lookup[layer2_index] == -1:
                     for layer1_index in range(self.parameters.layer1_size):
                         synapses[layer2_index][layer1_index] = 0
-"""
+"""         
+            # Accuracy tested against test dataset after each epoch
             if self.parameters.testing:
                 testing_accuracy = self.test(synapses, neuron_labels_lookup, (X_test, Y_test))
                 testing_accuracies.append(testing_accuracy)
@@ -269,6 +276,7 @@ class SNN:
 
         print("Finished Training. Saved Weights and Labels.")
 
+    # Saves the weights and labels in files
     def save_checkpoint(self, epoch, synapses, neuron_labels_lookup):
 
         weights_path = f"Checkpoints/{self.readable_initial_timestamp}/Epoch_{epoch}/weights.csv"
@@ -285,6 +293,7 @@ class SNN:
         if self.parameters.visualize_weights:
             self.visualize_synapse_weights_and_save(neuron_labels_lookup, synapses, visualized_weights_path)
 
+    # Tests the SNN for its accuracy
     def test(self, synapses, neuron_labels_lookup, dataset):
         X_test, Y_test = dataset
         predictions = []
@@ -307,6 +316,7 @@ class SNN:
 
         return accuracy
 
+    # Used to classify one image
     def inference(self, image_path, synapse_weights_path=None, labels_matrix_path=None):
         if synapse_weights_path is None:
             synapse_weights_path = self.parameters.weights_path
