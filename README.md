@@ -25,15 +25,15 @@ As a major part of our work, we provide a comprehensible implementation of an ST
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## ✨ Features
-With the files we provided you can either train your own Spiking-Neural-Network or do inference on existing pretrained weights. For training you can either use the dataset we uploaded in the MNIST folder and subfolders or you can simply use the MNIST dataset provided by tensorflow. Therefor in the [SNN.py](SNN.py) file you can find examples for both, how to convert your own image data into spike trains and how to transform an existing tensorflow dataset into spike trains.<br/>
+With the files we provided you can either train your own Spiking-Neural-Network or do inference on existing pretrained weights. For training you can either use the dataset we uploaded in the MNIST folder and subfolders or you can simply use the MNIST dataset provided by tensorflow. Therefore in the [SNN.py](SNN.py) file you can find examples for both, how to convert your own image data into spike trains and how to transform an existing tensorflow dataset into spike trains.<br/>
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## 💻 Usage
-To use our code, you first have to install the requiered libraries from the requierements.txt.
+To use our code, you first have to install the requiered libraries from the requirements.txt.
  ```
   pip install -r requirements.txt
   ```
-Afer this, you can train your own SNN.
+After this, you can train your own SNN.
  ```
   python3 main.py -mode training -use_tf_dataset
   ```
@@ -91,7 +91,7 @@ To get a list of all possible hyperparameters use
 
 ## 🚫 Limitations
 - No hidden layers implemented
-- Convertions into Spike Trains works only with GreyScale
+- Conversions into Spike Trains works only with GreyScale
 - Long training times
 - Didn't use the entire MNIST dataset for training
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -104,12 +104,12 @@ As part of this lecture, we also provided a poster presentation of our results f
 ## 📃 Paper
 If you are interested in the exact hyperparameters we used or want to get more details in general, we also uploaded the [accompanying term paper](Paper.pdf), which we wrote for this lecture. Still here are some of our results we achieved:<br/>
 <img src="Images/ClassicalANNComparison.png" alt="drawing" width="49%" /> |<img src="Images/SNN_Comparison.png" alt="drawing" width="49%" /><br/>
-In general our results showed that our implementation of an Spiking Neural Networks got a pretty good classification performance after only one epoch of training. But it didn't improve much beyond that and it was handely beaten by a classical ANN of similiar size using Dense layers after a few training epochs. Furthermore the SNNs didn't profit from more Neurons as much as the classical ANNs with Dense Layers did.
+In general our results showed that our implementation of an Spiking Neural Networks got a pretty good classification performance after only one epoch of training. But it didn't improve much beyond that and it was handily beaten by a classical ANN of similar size using Dense layers after a few training epochs. Furthermore the SNNs didn't profit from more Neurons as much as the classical ANNs with Dense Layers did.
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## 📝 Authors
 [Peter Keffer](mailto:pkeffer@uos.de)<br/>
-[Leonie Grafweg](mailto:grafweg@uos.de)<br/>
+[Leonie Grafweg](mailto:lgrafweg@uos.de)<br/>
 [Paula Heupel](mailto:pheupel@uos.de)<br/>
 [Cornelius Wolff](mailto:cowolff@uos.de)<br/>
 <p align="right">(<a href="#top">back to top</a>)</p>
