@@ -18,18 +18,33 @@ This project was created as part of the Neurodynamics lecture at the _University
 ## ❓ Why?
 Artificial Neural Networks (ANNs) are only loosely inspired by the human brain while Spiking Neural Networks (SNNs) incorporate various concepts of it.
 Spike Time Dependent Plasticity (STDP) is one of the most commonly used biologically inspired unsupervised learning rules for SNNs.<br/>
-In order to obtain a better understanding of SNNs we compared their performance in image classification to Fully-Connected ANNs using the MNIST dataset. <br /> 
-<img src="Images/MNISTDatasetSample.JPG" alt="MNIST Example Images" align="middle" width="500" /> <br /> 
+In order to obtain a better understanding of SNNs we compared their performance in image classification to Fully-Connected ANNs using the MNIST dataset. <br/> 
+<img src="Images/MNISTDatasetSample.JPG" alt="MNIST Example Images" align="middle" width="500" /> <br/> 
 For this to work, we had to transform the data for the SNN into rate-encoded spike trains.
 As a major part of our work, we provide a comprehensible implementation of an STDP-based SNN.
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## ✨ Features
-To-Do: Add list of features
+With the files we provided you can either train your own Spiking-Neural-Network or do inference on existing pretrained weights. For training you can either use the dataset we uploaded in the MNIST folder and subfolders or you can simply use the MNIST dataset provided by tensorflow. Therefor in the [SNN.py](SNN.py) file you can find examples for both, how to convert your own image data into spike trains and how to transform an existing tensorflow dataset into spike trains.<br/>
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## 💻 Usage
-To-Do: Add usage description
+To use our code, you first have to install the requiered libraries from the requierements.txt.
+ ```
+  pip install -r requirements.txt
+  ```
+Afer this, you can train your own SNN.
+ ```
+  python3 main.py -mode training -use_tf_dataset
+  ```
+You can also use this script to test your own trained network and weights.
+ ```
+  python3 main.py -mode inference -weights_path folder/weights.csv -labels_path folder/labels.csv -image_inference_path folder/picture.png
+  ```
+To get a list of all possible hyperparameters use
+ ```
+  python3 main.py -h
+```
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## 💾 Structure
