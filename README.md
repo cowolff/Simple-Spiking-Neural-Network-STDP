@@ -109,7 +109,7 @@ In general our results showed that our implementation of an Spiking Neural Netwo
 
 ## 📝 Authors
 [Peter Keffer](mailto:pkeffer@uos.de)<br/>
-[Leonie Grafweg](mailto:lgrafweg@uos.de)<br/>
+[Leonie Grafweg](mailto:lonie02@yahoo.com)<br/>
 [Paula Heupel](mailto:pheupel@uos.de)<br/>
 [Cornelius Wolff](mailto:cowolff@uos.de)<br/>
 <p align="right">(<a href="#top">back to top</a>)</p>
